@@ -1,0 +1,63 @@
+@model List<QMSForms.Models.IMSAssessment>
+
+<h2 class="mb-4">IMS Assessment Dashboard</h2>
+
+<a asp-controller="IMSAssessment" asp-action="Create" class="btn btn-primary mb-3">
+    Start New Assessment
+</a>
+
+<table class="table table-striped table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>Assessment No</th>
+            <th>Project</th>
+            <th>Assessor</th>
+            <th>Date</th>
+            <th>QM Inspection Score</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.AssessmentNo</td>
+                <td>@item.Project</td>
+                <td>@item.AssessorAuditor</td>
+                <td>@item.DateOfAssessment.ToString("dd MMM yyyy")</td>
+                <td>
+                    @{
+                        var score = item.OverallInspectionScore ?? 0;
+                        string color = "gray";
+                        if (score >= 90) color = "green";
+                        else if (score >= 75) color = "gold";
+                        else if (score >= 50) color = "orange";
+                        else color = "red";
+                    }
+                    <span style="font-weight:bold;color:@color">
+                        @(item.OverallInspectionScore.HasValue ? score + " %" : "-")
+                    </span>
+                </td>
+                <td>
+                    <a asp-controller="IMSAssessment"
+                       asp-action="Section"
+                       asp-route-id="@item.Id"
+                       class="btn btn-sm btn-info">
+                        View
+                    </a>
+
+                    <form asp-action="Delete"
+                          asp-route-id="@item.Id"
+                          method="post"
+                          style="display:inline;">
+                        <button class="btn btn-sm btn-danger"
+                                onclick="return confirm('Delete this assessment?')">
+                            Delete
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

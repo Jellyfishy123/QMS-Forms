@@ -1,0 +1,156 @@
+@model QMSForms.Models.SectionViewModel
+@{
+    ViewData["Title"] = "QM Section";
+}
+
+<h2>QM Inspection</h2>
+
+<form asp-action="Section" method="post">
+    <input type="hidden" asp-for="AssessmentId" />
+
+    <!-- ================= QM1 ================= -->
+    <h4>QM 1: MANAGEMENT AND IMS PLANNING</h4>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th style="width:40%">Question</th>
+                <th>Ideal</th>
+                <th>Actual</th>
+                <th>Observation Remarks</th>
+            </tr>
+        </thead>
+        <tbody>
+        @for (int i = 0; i < Model.QM1Rows.Count; i++)
+        {
+            <tr>
+                <td>@Model.QM1Rows[i].Question<input type="hidden" asp-for="QM1Rows[i].Question" /></td>
+                <td>@Model.QM1Rows[i].Ideal<input type="hidden" asp-for="QM1Rows[i].Ideal" /></td>
+                <td>
+                    @if(Model.IsReadOnly)
+                    {
+                        <span>@Model.QM1Rows[i].Actual %</span>
+                        <input type="hidden" asp-for="QM1Rows[i].Actual" />
+                    }
+                    else
+                    {
+                        <select asp-for="QM1Rows[i].Actual" class="form-control actual-score" data-table="QM1" data-index="@i">
+                            <option value="">Select</option>
+                            <option value="0" selected="@(Model.QM1Rows[i].Actual == 0 ? "selected" : null)">0%</option>
+                            <option value="25" selected="@(Model.QM1Rows[i].Actual == 25 ? "selected" : null)">25%</option>
+                            <option value="50" selected="@(Model.QM1Rows[i].Actual == 50 ? "selected" : null)">50%</option>
+                            <option value="75" selected="@(Model.QM1Rows[i].Actual == 75 ? "selected" : null)">75%</option>
+                            <option value="100" selected="@(Model.QM1Rows[i].Actual == 100 ? "selected" : null)">100%</option>
+                        </select>
+                    }
+                </td>
+                <td>
+                    @if(Model.IsReadOnly)
+                    {
+                        <span>@Model.QM1Rows[i].ObservationRemarks</span>
+                        <input type="hidden" asp-for="QM1Rows[i].ObservationRemarks" />
+                    }
+                    else
+                    {
+                        <input asp-for="QM1Rows[i].ObservationRemarks" class="form-control" />
+                    }
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    <div><strong>QM1 Inspection Score:</strong> <span id="QM1Score">0</span> %</div>
+
+    <!-- ================= QM2 ================= -->
+    <h4>QM 2: TRAINING AND COMPETENCY</h4>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th style="width:40%">Question</th>
+                <th>Ideal</th>
+                <th>Actual</th>
+                <th>Observation Remarks</th>
+            </tr>
+        </thead>
+        <tbody>
+        @for (int i = 0; i < Model.QM2Rows.Count; i++)
+        {
+            <tr>
+                <td>@Model.QM2Rows[i].Question<input type="hidden" asp-for="QM2Rows[i].Question" /></td>
+                <td>@Model.QM2Rows[i].Ideal<input type="hidden" asp-for="QM2Rows[i].Ideal" /></td>
+                <td>
+                    @if(Model.IsReadOnly)
+                    {
+                        <span>@Model.QM2Rows[i].Actual %</span>
+                        <input type="hidden" asp-for="QM2Rows[i].Actual" />
+                    }
+                    else
+                    {
+                        <select asp-for="QM2Rows[i].Actual" class="form-control actual-score" data-table="QM2" data-index="@i">
+                            <option value="">Select</option>
+                            <option value="0" selected="@(Model.QM2Rows[i].Actual == 0 ? "selected" : null)">0%</option>
+                            <option value="25" selected="@(Model.QM2Rows[i].Actual == 25 ? "selected" : null)">25%</option>
+                            <option value="50" selected="@(Model.QM2Rows[i].Actual == 50 ? "selected" : null)">50%</option>
+                            <option value="75" selected="@(Model.QM2Rows[i].Actual == 75 ? "selected" : null)">75%</option>
+                            <option value="100" selected="@(Model.QM2Rows[i].Actual == 100 ? "selected" : null)">100%</option>
+                        </select>
+                    }
+                </td>
+                <td>
+                    @if(Model.IsReadOnly)
+                    {
+                        <span>@Model.QM2Rows[i].ObservationRemarks</span>
+                        <input type="hidden" asp-for="QM2Rows[i].ObservationRemarks" />
+                    }
+                    else
+                    {
+                        <input asp-for="QM2Rows[i].ObservationRemarks" class="form-control" />
+                    }
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    <div><strong>QM2 Inspection Score:</strong> <span id="QM2Score">0</span> %</div>
+
+    <br />
+    @if(!Model.IsReadOnly)
+    {
+        <button type="submit" class="btn btn-success">Save Section</button>
+    }
+</form>
+
+<br />
+<div><strong>Overall QM Inspection Score:</strong> <span id="OverallScore">0</span> %</div>
+
+@section Scripts {
+<script>
+    function calculateScore(tableId){
+        let selects = document.querySelectorAll(`.actual-score[data-table='${tableId}']`);
+        let total = 0;
+        let count = 0;
+        selects.forEach(sel=>{
+            let val = parseInt(sel.value);
+            if(!isNaN(val)){ total+=val; count++; }
+        });
+        return count>0 ? (total/count).toFixed(2) : 0;
+    }
+
+    function updateScores(){
+        const qm1Score = calculateScore("QM1");
+        const qm2Score = calculateScore("QM2");
+
+        document.getElementById("QM1Score").innerText = qm1Score;
+        document.getElementById("QM2Score").innerText = qm2Score;
+
+        const overall = ((parseFloat(qm1Score)+parseFloat(qm2Score))/2).toFixed(2);
+        document.getElementById("OverallScore").innerText = overall;
+    }
+
+    document.querySelectorAll(".actual-score").forEach(sel=>{
+        sel.addEventListener("change", updateScores);
+    });
+
+    // Initial calculation
+    updateScores();
+</script>
+}

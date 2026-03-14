@@ -1,0 +1,99 @@
+@model QMSForms.Models.IMSAssessment
+
+@{
+    ViewData["Title"] = "IMS Quarterly Cross-Project Assessment";
+}
+
+<h3 class="text-center mb-4">
+IMS QUARTERLY CROSS-PROJECT ASSESSMENT COMPLIANCE PROGRAMME
+</h3>
+
+<div class="card shadow-sm p-4 mb-4">
+
+    <p>
+    This compliance audit tool, developed in accordance with the KTC Integrated
+    Management System (IMS), facilitates systematic compliance evaluation and
+    continual IMS improvement.
+    </p>
+
+    <p class="text-danger fw-bold">
+    This report is strictly confidential and may not be disclosed,
+    reproduced, or distributed without prior written approval.
+    </p>
+
+</div>
+
+
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+
+<div class="card shadow-sm p-4 mb-4">
+
+<h5 class="mb-3">Assessment Details</h5>
+
+<div class="row">
+
+<div class="col-md-6 mb-3">
+<label>Project</label>
+<input asp-for="Project" class="form-control" />
+</div>
+
+<div class="col-md-6 mb-3">
+<label>Site Representative</label>
+<input asp-for="SiteRepresentative" class="form-control" />
+</div>
+
+<div class="col-md-4 mb-3">
+<label>Date of Assessment</label>
+<input asp-for="DateOfAssessment" type="date" class="form-control" />
+</div>
+
+<div class="col-md-4 mb-3">
+<label>Assessment No</label>
+<input asp-for="AssessmentNo" class="form-control" />
+</div>
+
+<div class="col-md-4 mb-3">
+<label>Assessor / Auditor</label>
+<input asp-for="AssessorAuditor" class="form-control" />
+</div>
+
+<div class="col-md-6 mb-3">
+<label>Overall Inspection Audit Score</label>
+<input asp-for="OverallInspectionScore"
+       class="form-control"
+       readonly />
+</div>
+
+<div class="col-md-6 mb-3">
+<label>Insert Latest Project / Site Photo</label>
+<input type="file"
+       name="SitePhoto"
+       class="form-control"
+       accept="image/*" />
+</div>
+
+</div>
+</div>
+
+<div class="card shadow-sm p-4 mb-4">
+
+<h5>Instructions</h5>
+
+<ol>
+<li>All Sections must be scored.</li>
+<li>Each table contains an “Ideal” column set at 100%.</li>
+<li>Enter percentage score for Actual performance.</li>
+<li>Not applicable items shall be scored as 100%.</li>
+<li>Complete Observation Remarks for evidence trail.</li>
+<li>Overall Inspection Score is average of all 3 sections.</li>
+</ol>
+
+</div>
+
+<div class="text-center">
+<button type="submit" class="btn btn-success px-5">
+Start Assessment
+</button>
+</div>
+
+</form>

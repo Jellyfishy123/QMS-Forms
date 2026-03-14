@@ -1,0 +1,113 @@
+@model QMSForms.Models.Request
+
+<form asp-action="@ViewData["FormAction"]" method="post" enctype="multipart/form-data" class="p-4 border rounded shadow-sm bg-white">
+    <input type="hidden" asp-for="Type" />
+
+    <div class="mb-3">
+        <label asp-for="Title" class="form-label"></label>
+        <input asp-for="Title" class="form-control" readonly />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Type" class="form-label">Request Type</label>
+        <input asp-for="Type" class="form-control text-white bg-secondary" readonly />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="RequestDate" class="form-label"></label>
+        <input asp-for="RequestDate" type="date" class="form-control" readonly />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="TargetCompletionDate" class="form-label"></label>
+        <input asp-for="TargetCompletionDate" type="date" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Location" class="form-label"></label>
+        <input asp-for="Location" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+       <label asp-for="PersonInCharge"></label>
+            <select asp-for="PersonInCharge" class="form-select" required>
+                <option value="">-- Please select --</option>
+                    @foreach (var pic in (string[])ViewBag.PICs)
+                    {
+                    <option value="@pic">@pic</option>
+                    }
+            </select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="NonConformityHighlighted" class="form-label"></label>
+            <select asp-for="NonConformityHighlighted" class="form-select" required>
+                <option value="">-- Please select --</option>
+                    @foreach (var NonConformityHighlighted in (string[])ViewBag.NonConformityHighlighted)
+                    {
+                    <option value="@NonConformityHighlighted">@NonConformityHighlighted</option>
+                    }
+            </select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="NonConformityRelatedTo" class="form-label"></label>
+            <select asp-for="NonConformityRelatedTo" class="form-select" required>
+                <option value="">-- Please select --</option>
+                    @foreach (var NonConformityRelatedTo in (string[])ViewBag.NonConformityRelatedTo)
+                    {
+                    <option value="@NonConformityRelatedTo">@NonConformityRelatedTo</option>
+                    }
+            </select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="DescriptionOfNonConformity" class="form-label"></label>
+        <textarea asp-for="DescriptionOfNonConformity" class="form-control" rows="4"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ProjectCode" class="form-label"></label>
+            <select asp-for="ProjectCode" class="form-select" required>
+                <option value="">-- Please select --</option>
+                    @foreach (var ProjectCode in (string[])ViewBag.ProjectCodes)
+                    {
+                    <option value="@ProjectCode">@ProjectCode</option>
+                    }
+            </select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="DesignatedPersonToClose" class="form-label"></label>
+            <select asp-for="DesignatedPersonToClose" class="form-select" required>
+                <option value="">-- Please select --</option>
+                    @foreach (var DesignatedPersonToClose in (string[])ViewBag.DesignatedPersonToClose)
+                    {
+                    <option value="@DesignatedPersonToClose">@DesignatedPersonToClose</option>
+                    }
+            </select>
+    </div>
+
+    <div class="mb-3">
+        <label>Attach Sketch/Photos (Optional)</label>
+        <input type="file" name="attachment" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100">Submit</button>
+</form>
+
+<style>
+    .form-control, .form-select, textarea {
+        border-radius: 8px;
+    }
+
+    .btn-primary {
+        border-radius: 8px;
+        font-weight: 600;
+    }
+
+    form {
+        max-width: 800px;
+        margin: auto;
+    }
+</style>

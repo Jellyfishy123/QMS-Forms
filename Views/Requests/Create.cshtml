@@ -1,0 +1,13 @@
+@model QMSForms.Models.Request
+@{
+    
+    ViewData["Title"] = "Create Request";
+    ViewData["FormAction"] = "Create";
+}
+
+<h3 class="text-center mb-4">Create New Request</h3>
+@await Html.PartialAsync("_RequestForm", Model)
+
+
+
+

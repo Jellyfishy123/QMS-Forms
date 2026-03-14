@@ -1,0 +1,89 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+    var userEmail = Context.Session.GetString("UserEmail");
+
+    // Time-based greeting
+    var hour = DateTime.Now.Hour;
+    string greeting;
+    string emoji;
+
+    if (hour < 12) { greeting = "Good morning"; emoji = "🌤️"; }
+    else if (hour < 18) { greeting = "Good afternoon"; emoji = "☀️"; }
+    else { greeting = "Good evening"; emoji = "🌙"; }
+}
+
+<div class="container mt-5">
+    <!-- Welcome Greeting -->
+    <div class="mb-4 text-center">
+        <h2 class="fw-bold">@greeting @emoji, @userEmail</h2>
+        <p class="text-muted">Welcome to your QMS Dashboard</p>
+    </div>
+
+    <div class="row g-4">
+        <!-- Requests Module -->
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 p-4 text-center module-card">
+                <i class="fa-solid fa-list-check fa-3x mb-3 text-primary"></i>
+                <h4 class="card-title mb-2">Requests</h4>
+                <p class="card-text text-muted">View and manage all your requests.</p>
+                <a href="@Url.Action("Index", "Requests")" class="btn btn-primary btn-lg w-100">Show Requests</a>
+            </div>
+        </div>
+
+        <!-- Create Request Module -->
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 p-4 text-center module-card">
+                <i class="fa-solid fa-plus fa-3x mb-3 text-success"></i>
+                <h4 class="card-title mb-2">New Request</h4>
+                <p class="card-text text-muted">Create a new IAR / CAR / NCR request.</p>
+                <div class="d-grid gap-2">
+                    <a href="@Url.Action("Create", "Requests", new { type = "IAR" })" class="btn btn-success btn-lg text-white">New IAR</a>
+                    <a href="@Url.Action("Create", "Requests", new { type = "CAR" })" class="btn btn-primary btn-lg text-white">New CAR</a>
+                    <a href="@Url.Action("Create", "Requests", new { type = "NCR" })" class="btn btn-lg text-white" style="background-color:#FF6F00;">New NCR</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Profile Module -->
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 p-4 text-center module-card">
+                <i class="fa-solid fa-user fa-3x mb-3 text-warning"></i>
+                <h4 class="card-title mb-2">User Profile</h4>
+                <p class="card-text text-muted"><strong>Email:</strong> @userEmail</p>
+                <p class="card-text text-muted"><strong>Password:</strong> ********</p>
+                <a href="@Url.Action("ChangePassword", "Account")" class="btn btn-warning btn-lg w-100 text-white" style="background-color: #f0ad4e; border-color: #eea236;">Change Password</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f1f3f5;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .module-card {
+        border-radius: 12px;
+        background-color: #ffffff;
+    }
+
+    .module-card:hover {
+        transform: translateY(-5px);
+        transition: 0.3s;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    h2, h4 {
+        font-weight: 600;
+    }
+
+    .btn-lg {
+        font-size: 1.1rem;
+        padding: 0.75rem;
+    }
+
+    .fa-3x {
+        color: #495057;
+    }
+</style>
